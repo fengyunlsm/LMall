@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script>
+      // 和参数结合在一起
+      let total = 0
+      let sum1 = (...m)=>{
+        for (i of m) {
+          total = i + total
+        }
+        console.log(`total-1:${total}`)
+      }
+      sum1(5, 8, 9)
+
+      var sum2 = function(...m) {
+        for (i of m) {
+          total = i + total
+        }
+        console.log(`total-2:${total}`)
+      }
+      sum2(9, 4, 5, 2)
+
+      var [x, ...y] = [6, 7, 8, 9]
+      console.log('函数参数的扩展:', [x, ...y])
+
+      // 数组的扩张
+      var [x, y] = [4, 8]
+      console.log('数组的扩展:', ...[x, y])
+
+      // 函数的扩张
+      var arr1 = [7, 6]
+      var arr2 = [4, 8]
+      console.log('函数的扩展: ', [...arr1, ...arr2])
+
+      // 字符串的扩展(字符串转化成数组的形式)
+      let [a, b, c] = [...'ES6']
+      console.log('字符串的拓展: ', [a, b, c][0])
+    </script>
+  </body>
+</html>

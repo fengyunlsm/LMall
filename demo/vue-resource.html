@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="node_modules/vue/dist/vue.js">
+    </script>
+    <script src="node_modules/vue-resource/dist/vue-resource.js">
+    </script>
+    <script src="node_modules/axios/dist/axios.js">
+
+    </script>
+  </head>
+  <body>
+    <div id="app" class="container">
+      <h1>vue-resource插件讲解</h1>
+      <a href="javascript:;" class="btn btn-primary" v-on:click="get">Get请求</a>
+      <a href="javascript:;" class="btn btn-primary" @click="post">Post请求</a>
+      <a href="javascript:;" class="btn btn-primary" @click="jsonp">JSONP请求</a>
+      <div class="">
+        <span>{{msg}}</span>
+      </div>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          msg: ''
+        },
+        methods: {
+          get () {
+            console.log('hello')
+            axios.get(".../package.json").then(res=>{
+              this.msg = res.data
+            })
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

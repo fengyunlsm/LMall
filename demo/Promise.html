@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script>
+      // resolve 接口调用成功执行的回调, reject 接口报错需要执行的回调
+      // 函数功能: 登录成功的接口
+      let checkLogin = () => {
+        return new Promise(function(resolve, reject) {
+          let login_flag = document.cookie.indexOf("userId") > -1? true:false
+          if (login_flag= true) {
+            resolve({
+              status: 0,
+              message: 'login success'
+            })
+          } else {
+            reject('error')
+          }
+        })
+      }
+      // 获取用户ID的接口
+      let getUserInfo = ()=> {
+        return new Promise ((resolve, reject) => {
+          let userInfo = {
+            userId: '101'
+          }
+          resolve(userInfo)
+        })
+      }
+      checkLogin().then(res => {
+        if (res.status === 0) {
+          console.log('login success')
+          getUserInfo().then(res2 => {
+            console.log(`userId:${res2.userId}`)
+          })
+        }
+      }).catch (error => {
+        console.log('login fail')
+      })
+      // 同时调用多个接口
+      // 此处有没有可能实际就是闭包
+      Promise.all([checkLogin(), getUserInfo()]).then(([res1, res2]) => {
+        console.log(`reslut1:${res1.status}`, `reslut2:${res2.userId}`)
+      })
+    </script>
+  </body>
+</html>
