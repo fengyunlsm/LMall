@@ -24,7 +24,8 @@
         <div class="navbar">
             <div class="navbar-left-container">
               <a href="/">
-                <img class="navbar-brand-logo" src="/static/img/logo1.png">
+              <!--  <img class="navbar-brand-logo" src="/static/img/logo1.png">-->
+              <img src="https://img.icons8.com/dusk/64/000000/online-store.png" class="navbar-brand-logo">
               </a>
             </div>
             <div class="navbar-right-container" style="display: flex;">
@@ -156,6 +157,7 @@
         },
         computed: {
           nickName() {
+            // 获取属性
             return this.$store.state.nickName
           },
           cartCount() {
@@ -184,6 +186,7 @@
                 let res = response.data
                 if (res.status === '0') {
                   // this.nickName = res.result
+                  //  $store 是做啥
                   this.$store.commit("updateUserInfo", res.result)
                 } else {
                   this.nickName = ''
@@ -200,7 +203,6 @@
                 let res = response.data
               if (res.status === '0') {
                   // 计算购物车数量
-                  console.log('购物车数量: '+ res.result)
                   this.$store.commit('initCartCount', res.result)
                 }
               })
@@ -211,23 +213,21 @@
                 // 密码和账号为空
                 this.errorTip = true
               }
-              console.log('start login')
               axios.post("/users/login", {
                 userName: this.userName,
                 userPwd: this.userPwd
               }).then((response) => {
                 let res = response.data
                 if (res.status === '0') {
-                  console.log('login success')
-                  this.errorTip = true
+                  this.errorTip = false
                   this.loginModalFlag = false
                   // this.nickName = res.result.userName
                   this.$store.commit('updateUserInfo', res.result.userName) // 显示姓名
                   this.getCartCount()  // 显示购物车的数量
                 } else {
-                  console.log('login fail')
-                  this.errorTip = false
-                  // 登录成功
+                  console.log('login fail')   //  test the case
+                  this.errorTip = true
+                  // 登录失败
                 }
               })
             },

@@ -45,7 +45,7 @@
                   </div>
                 </li>
               </ul>
-              <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+              <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0">
                   <img src="/static/loading/loading-balls.svg" v-show="this.loading">
               </div>
             </div>
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-    <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+    <modal v-bind:mdShow="mdShow" v-on:closes="closeModal">
       <p slot="message" >
         请先登录，否则无法加入购物车!
       </p>
@@ -80,6 +80,7 @@ export default {
   data () {
     return {
       goodsList: [],
+      goodsTempList: [],
       priceList: [
         {
           startPrice: '0.00',
@@ -103,7 +104,7 @@ export default {
       overLayFlag: false,
       sortFlag: true,
       page: 1,
-      pageSize: 8,
+      pageSize: 9,
       busy: false,
       loading: true,
       mdShow: false
@@ -116,10 +117,13 @@ export default {
     loadMore () {
       this.busy = true  // 禁止加载
       this.loading = false
+      console.log('loading')
       setTimeout(() => {
         this.page = this.page + 1
-        this.getGoodsList()
-      }, 1000)
+        this.getGoodsList()  // 获取下一页的数据, 下一步是打算做
+        //
+        //this.goodsList.push(this.goodsTempList)
+      }, 2000)  //  延迟一定时间再进行请求
     },
     getGoodsList () {
       let flag = this.sortFlag ? 1 : -1
@@ -133,18 +137,22 @@ export default {
       axios.get("/goods/list", {
         params: param
       }).then((res) => {
+        // 将商品加入购物车
+        //this.goodsTempList = res.data.result.list
+        // console.log(this.goodsTempList)
+        this.goodsList = this.goodsList.concat(res.data.result.list)
         length = res.data.result.list.length
-        if (length < this.pageSize) {
-          console.log('page start: ', this.page)
-          console.log('禁止加载')
-          this.goodsList = this.goodsList.concat(res.data.result.list)
-          this.busy = true
-          this.loading = false
-        } else {
-          this.goodsList = this.goodsList.concat(res.data.result.list)
-          this.busy = false
-          this.loading = false
-        }
+        // if (length < this.pageSize) {
+        //   console.log('page start: ', this.page)
+        //   console.log('禁止加载')
+        //   this.goodsList = this.goodsList.concat(res.data.result.list)  //
+        //   this.busy = true
+        //   this.loading = false
+        // } else {
+        //   this.goodsList = this.goodsList.concat(res.data.result.list)
+        //   this.busy = false
+        //   this.loading = false
+        // }
       })
     },
     addCart (productId) {
@@ -154,7 +162,7 @@ export default {
       }).then ((response) => {
         let res = response.data
         if (res.status === '0') {
-          alert ("加入成功")
+          alert ("加入成功")   //  设定不一致
           this.$store.commit('updateCartCount', 1)
         } else {
           this.mdShow = true
@@ -179,7 +187,7 @@ export default {
       this.priceListIndex = index
       this.page = 1
       this.goodsList = []
-      this.getGoodsList()
+      this.getGoodsList()   // 第一次
     },
     showFilterPop () {
       // 显示价格区间 和 面板
@@ -196,7 +204,6 @@ export default {
       this.getGoodsList()
     },
     closeModal () {
-      console.log('cccc')
       this.mdShow = false
     }
   },
@@ -207,7 +214,7 @@ export default {
     'Modal': Modal
   },
   mounted: function () {
-
+    // 如何切换不同
   }
 }
 </script>

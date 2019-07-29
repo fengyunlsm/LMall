@@ -27,11 +27,11 @@
       closeModal () {
         // 功能： 将模态框设置回默认值
         console.log('close Modal')
-        this.$emit('close')
+        this.$emit('closes')
       },
       closeLoginModal () {
         console.log('close login Modal')
-        this.$emit('closes')
+        this.$emit('closes')    // 实际上不一样
       }
     }
   }
