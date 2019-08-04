@@ -1,4 +1,4 @@
-# immocmall
+# chantMall
 
 > A Vue.js project
 
